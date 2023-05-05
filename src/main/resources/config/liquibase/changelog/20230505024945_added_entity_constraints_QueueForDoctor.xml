@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity QueueForDoctor.
+    -->
+    <changeSet id="20230505024945-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="queue_for_doctor"
+                                 constraintName="fk_queue_for_doctor__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="doctor_id"
+                                 baseTableName="queue_for_doctor"
+                                 constraintName="fk_queue_for_doctor__doctor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="doctor"/>
+
+        <addForeignKeyConstraint baseColumnNames="department_id"
+                                 baseTableName="queue_for_doctor"
+                                 constraintName="fk_queue_for_doctor__department_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="department"/>
+
+        <addForeignKeyConstraint baseColumnNames="hospital_id"
+                                 baseTableName="queue_for_doctor"
+                                 constraintName="fk_queue_for_doctor__hospital_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hospital"/>
+    </changeSet>
+</databaseChangeLog>

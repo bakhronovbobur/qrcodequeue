@@ -1,0 +1,54 @@
+{
+  "applications": "*",
+  "changelogDate": "20230505024942",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "hospital",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "longitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "latitude",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Hospital",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "region",
+      "relationshipName": "region",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "district",
+      "relationshipName": "district",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "hospital",
+      "relationshipName": "departments",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

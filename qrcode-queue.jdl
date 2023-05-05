@@ -1,0 +1,53 @@
+entity Region {
+    name String required
+}
+
+entity District {
+    name String required
+}
+
+entity Hospital {
+    name String required,
+    longitude Double,
+    latitude Double,
+    description String,
+    address String
+}
+
+entity Department {
+    name String required
+}
+
+entity Doctor {
+    firstname String required,
+    lastname String required,
+    middleName String required,
+    phone String,
+    position String,
+    qualification String
+}
+
+entity QueueForDoctor {
+    number Integer
+}
+
+relationship ManyToOne {
+    District{region required} to Region{districts}
+    Hospital{region} to Region
+    Hospital{district} to District,
+    Department{hospital required} to Hospital{departments}
+    QueueForDoctor{user} to User
+    QueueForDoctor{doctor} to Doctor
+    QueueForDoctor{department} to Department
+    QueueForDoctor{Hospital} to Hospital
+}
+
+relationship ManyToMany {
+    Department{doctors} to Doctor{departments}
+}
+
+dto all with mapstruct
+paginate all with pagination except Region
+paginate Region with infinite-scroll
+service all with serviceClass
+filter all except Region

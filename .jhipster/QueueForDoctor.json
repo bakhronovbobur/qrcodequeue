@@ -1,0 +1,41 @@
+{
+  "applications": "*",
+  "changelogDate": "20230505024945",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "queue_for_doctor",
+  "fields": [
+    {
+      "fieldName": "number",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "QueueForDoctor",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "doctor",
+      "relationshipName": "doctor",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "department",
+      "relationshipName": "department",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "hospital",
+      "relationshipName": "hospital",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
