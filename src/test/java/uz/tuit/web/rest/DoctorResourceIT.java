@@ -85,6 +85,16 @@ class DoctorResourceIT {
             .phone(DEFAULT_PHONE)
             .position(DEFAULT_POSITION)
             .qualification(DEFAULT_QUALIFICATION);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        doctor.getDepartments().add(department);
         return doctor;
     }
 
@@ -102,6 +112,16 @@ class DoctorResourceIT {
             .phone(UPDATED_PHONE)
             .position(UPDATED_POSITION)
             .qualification(UPDATED_QUALIFICATION);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createUpdatedEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        doctor.getDepartments().add(department);
         return doctor;
     }
 

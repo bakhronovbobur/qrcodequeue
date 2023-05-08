@@ -21,13 +21,13 @@
         <dt><span>Hospital</span></dt>
         <dd>
           <div *ngIf="department.hospital">
-            <a [routerLink]="['/hospital', department.hospital.id, 'view']">{{ department.hospital.id }}</a>
+            <a [routerLink]="['/hospital', department.hospital.id, 'view']">{{ department.hospital.name }}</a>
           </div>
         </dd>
         <dt><span>Doctors</span></dt>
         <dd>
           <span *ngFor="let doctors of department.doctors; let last = last">
-            <a [routerLink]="['/doctor', doctors.id, 'view']">{{ doctors.id }}</a
+            <a [routerLink]="['/doctor', doctors.id, 'view']">{{ doctors.firstname }}</a
             >{{ last ? '' : ', ' }}
           </span>
         </dd>

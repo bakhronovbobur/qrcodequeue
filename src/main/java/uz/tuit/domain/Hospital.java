@@ -42,11 +42,13 @@ public class Hospital implements Serializable {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "districts" }, allowSetters = true)
     private Region region;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "region" }, allowSetters = true)
     private District district;
 

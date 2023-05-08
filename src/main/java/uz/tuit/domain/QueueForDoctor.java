@@ -3,6 +3,7 @@ package uz.tuit.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -26,18 +27,22 @@ public class QueueForDoctor implements Serializable {
     @Column(name = "number")
     private Integer number;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private User user;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "departments" }, allowSetters = true)
     private Doctor doctor;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "hospital", "doctors" }, allowSetters = true)
     private Department department;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "region", "district", "departments" }, allowSetters = true)
     private Hospital hospital;
 

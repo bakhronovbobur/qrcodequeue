@@ -2,17 +2,25 @@ package uz.tuit.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +31,7 @@ import uz.tuit.domain.District;
 import uz.tuit.domain.Hospital;
 import uz.tuit.domain.Region;
 import uz.tuit.repository.HospitalRepository;
+import uz.tuit.service.HospitalService;
 import uz.tuit.service.criteria.HospitalCriteria;
 import uz.tuit.service.dto.HospitalDTO;
 import uz.tuit.service.mapper.HospitalMapper;
@@ -31,6 +40,7 @@ import uz.tuit.service.mapper.HospitalMapper;
  * Integration tests for the {@link HospitalResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class HospitalResourceIT {
@@ -61,8 +71,14 @@ class HospitalResourceIT {
     @Autowired
     private HospitalRepository hospitalRepository;
 
+    @Mock
+    private HospitalRepository hospitalRepositoryMock;
+
     @Autowired
     private HospitalMapper hospitalMapper;
+
+    @Mock
+    private HospitalService hospitalServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -85,6 +101,26 @@ class HospitalResourceIT {
             .latitude(DEFAULT_LATITUDE)
             .description(DEFAULT_DESCRIPTION)
             .address(DEFAULT_ADDRESS);
+        // Add required entity
+        Region region;
+        if (TestUtil.findAll(em, Region.class).isEmpty()) {
+            region = RegionResourceIT.createEntity(em);
+            em.persist(region);
+            em.flush();
+        } else {
+            region = TestUtil.findAll(em, Region.class).get(0);
+        }
+        hospital.setRegion(region);
+        // Add required entity
+        District district;
+        if (TestUtil.findAll(em, District.class).isEmpty()) {
+            district = DistrictResourceIT.createEntity(em);
+            em.persist(district);
+            em.flush();
+        } else {
+            district = TestUtil.findAll(em, District.class).get(0);
+        }
+        hospital.setDistrict(district);
         return hospital;
     }
 
@@ -101,6 +137,26 @@ class HospitalResourceIT {
             .latitude(UPDATED_LATITUDE)
             .description(UPDATED_DESCRIPTION)
             .address(UPDATED_ADDRESS);
+        // Add required entity
+        Region region;
+        if (TestUtil.findAll(em, Region.class).isEmpty()) {
+            region = RegionResourceIT.createUpdatedEntity(em);
+            em.persist(region);
+            em.flush();
+        } else {
+            region = TestUtil.findAll(em, Region.class).get(0);
+        }
+        hospital.setRegion(region);
+        // Add required entity
+        District district;
+        if (TestUtil.findAll(em, District.class).isEmpty()) {
+            district = DistrictResourceIT.createUpdatedEntity(em);
+            em.persist(district);
+            em.flush();
+        } else {
+            district = TestUtil.findAll(em, District.class).get(0);
+        }
+        hospital.setDistrict(district);
         return hospital;
     }
 
@@ -184,6 +240,23 @@ class HospitalResourceIT {
             .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.doubleValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllHospitalsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(hospitalServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restHospitalMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(hospitalServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllHospitalsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(hospitalServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restHospitalMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(hospitalRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test

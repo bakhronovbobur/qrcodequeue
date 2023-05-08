@@ -32,18 +32,18 @@ entity QueueForDoctor {
 }
 
 relationship ManyToOne {
-    District{region required} to Region{districts}
-    Hospital{region} to Region
-    Hospital{district} to District,
-    Department{hospital required} to Hospital{departments}
-    QueueForDoctor{user} to User
-    QueueForDoctor{doctor} to Doctor
-    QueueForDoctor{department} to Department
-    QueueForDoctor{Hospital} to Hospital
+    District{region(name) required} to Region{districts}
+    Hospital{region(name) required} to Region
+    Hospital{district(name) required} to District,
+    Department{hospital(name) required} to Hospital{departments}
+    QueueForDoctor{user(login) required} to User
+    QueueForDoctor{doctor(firstname) required} to Doctor
+    QueueForDoctor{department(name) required} to Department
+    QueueForDoctor{Hospital(name) required} to Hospital
 }
 
 relationship ManyToMany {
-    Department{doctors} to Doctor{departments}
+    Department{doctors(firstname)} to Doctor{departments required}
 }
 
 dto all with mapstruct

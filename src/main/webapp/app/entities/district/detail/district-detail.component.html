@@ -21,7 +21,7 @@
         <dt><span>Region</span></dt>
         <dd>
           <div *ngIf="district.region">
-            <a [routerLink]="['/region', district.region.id, 'view']">{{ district.region.id }}</a>
+            <a [routerLink]="['/region', district.region.id, 'view']">{{ district.region.name }}</a>
           </div>
         </dd>
       </dl>

@@ -13,17 +13,19 @@ import uz.tuit.service.dto.RegionDTO;
  */
 @Mapper(componentModel = "spring")
 public interface HospitalMapper extends EntityMapper<HospitalDTO, Hospital> {
-    @Mapping(target = "region", source = "region", qualifiedByName = "regionId")
-    @Mapping(target = "district", source = "district", qualifiedByName = "districtId")
+    @Mapping(target = "region", source = "region", qualifiedByName = "regionName")
+    @Mapping(target = "district", source = "district", qualifiedByName = "districtName")
     HospitalDTO toDto(Hospital s);
 
-    @Named("regionId")
+    @Named("regionName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    RegionDTO toDtoRegionId(Region region);
+    @Mapping(target = "name", source = "name")
+    RegionDTO toDtoRegionName(Region region);
 
-    @Named("districtId")
+    @Named("districtName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    DistrictDTO toDtoDistrictId(District district);
+    @Mapping(target = "name", source = "name")
+    DistrictDTO toDtoDistrictName(District district);
 }

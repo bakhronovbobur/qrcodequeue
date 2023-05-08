@@ -46,25 +46,25 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="user.id">
+          <th scope="col" jhiSortBy="user.login">
             <div class="d-flex">
               <span>User</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="doctor.id">
+          <th scope="col" jhiSortBy="doctor.firstname">
             <div class="d-flex">
               <span>Doctor</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="department.id">
+          <th scope="col" jhiSortBy="department.name">
             <div class="d-flex">
               <span>Department</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="hospital.id">
+          <th scope="col" jhiSortBy="hospital.name">
             <div class="d-flex">
               <span>Hospital</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -80,21 +80,21 @@
           </td>
           <td>{{ queueForDoctor.number }}</td>
           <td>
-            {{ queueForDoctor.user?.id }}
+            {{ queueForDoctor.user?.login }}
           </td>
           <td>
             <div *ngIf="queueForDoctor.doctor">
-              <a [routerLink]="['/doctor', queueForDoctor.doctor.id, 'view']">{{ queueForDoctor.doctor.id }}</a>
+              <a [routerLink]="['/doctor', queueForDoctor.doctor.id, 'view']">{{ queueForDoctor.doctor.firstname }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="queueForDoctor.department">
-              <a [routerLink]="['/department', queueForDoctor.department.id, 'view']">{{ queueForDoctor.department.id }}</a>
+              <a [routerLink]="['/department', queueForDoctor.department.id, 'view']">{{ queueForDoctor.department.name }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="queueForDoctor.hospital">
-              <a [routerLink]="['/hospital', queueForDoctor.hospital.id, 'view']">{{ queueForDoctor.hospital.id }}</a>
+              <a [routerLink]="['/hospital', queueForDoctor.hospital.id, 'view']">{{ queueForDoctor.hospital.name }}</a>
             </div>
           </td>
           <td class="text-end">

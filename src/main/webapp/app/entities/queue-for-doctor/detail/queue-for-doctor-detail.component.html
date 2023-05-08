@@ -20,24 +20,24 @@
         </dd>
         <dt><span>User</span></dt>
         <dd>
-          <span>{{ queueForDoctor.user?.id }}</span>
+          <span>{{ queueForDoctor.user?.login }}</span>
         </dd>
         <dt><span>Doctor</span></dt>
         <dd>
           <div *ngIf="queueForDoctor.doctor">
-            <a [routerLink]="['/doctor', queueForDoctor.doctor.id, 'view']">{{ queueForDoctor.doctor.id }}</a>
+            <a [routerLink]="['/doctor', queueForDoctor.doctor.id, 'view']">{{ queueForDoctor.doctor.firstname }}</a>
           </div>
         </dd>
         <dt><span>Department</span></dt>
         <dd>
           <div *ngIf="queueForDoctor.department">
-            <a [routerLink]="['/department', queueForDoctor.department.id, 'view']">{{ queueForDoctor.department.id }}</a>
+            <a [routerLink]="['/department', queueForDoctor.department.id, 'view']">{{ queueForDoctor.department.name }}</a>
           </div>
         </dd>
         <dt><span>Hospital</span></dt>
         <dd>
           <div *ngIf="queueForDoctor.hospital">
-            <a [routerLink]="['/hospital', queueForDoctor.hospital.id, 'view']">{{ queueForDoctor.hospital.id }}</a>
+            <a [routerLink]="['/hospital', queueForDoctor.hospital.id, 'view']">{{ queueForDoctor.hospital.name }}</a>
           </div>
         </dd>
       </dl>

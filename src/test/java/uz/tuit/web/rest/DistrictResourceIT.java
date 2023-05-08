@@ -2,17 +2,25 @@ package uz.tuit.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +29,7 @@ import uz.tuit.IntegrationTest;
 import uz.tuit.domain.District;
 import uz.tuit.domain.Region;
 import uz.tuit.repository.DistrictRepository;
+import uz.tuit.service.DistrictService;
 import uz.tuit.service.criteria.DistrictCriteria;
 import uz.tuit.service.dto.DistrictDTO;
 import uz.tuit.service.mapper.DistrictMapper;
@@ -29,6 +38,7 @@ import uz.tuit.service.mapper.DistrictMapper;
  * Integration tests for the {@link DistrictResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class DistrictResourceIT {
@@ -45,8 +55,14 @@ class DistrictResourceIT {
     @Autowired
     private DistrictRepository districtRepository;
 
+    @Mock
+    private DistrictRepository districtRepositoryMock;
+
     @Autowired
     private DistrictMapper districtMapper;
+
+    @Mock
+    private DistrictService districtServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -170,6 +186,23 @@ class DistrictResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(district.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDistrictsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(districtServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDistrictMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(districtServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDistrictsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(districtServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDistrictMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(districtRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test

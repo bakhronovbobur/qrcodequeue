@@ -15,25 +15,27 @@ import uz.tuit.service.dto.HospitalDTO;
  */
 @Mapper(componentModel = "spring")
 public interface DepartmentMapper extends EntityMapper<DepartmentDTO, Department> {
-    @Mapping(target = "hospital", source = "hospital", qualifiedByName = "hospitalId")
-    @Mapping(target = "doctors", source = "doctors", qualifiedByName = "doctorIdSet")
+    @Mapping(target = "hospital", source = "hospital", qualifiedByName = "hospitalName")
+    @Mapping(target = "doctors", source = "doctors", qualifiedByName = "doctorFirstnameSet")
     DepartmentDTO toDto(Department s);
 
     @Mapping(target = "removeDoctors", ignore = true)
     Department toEntity(DepartmentDTO departmentDTO);
 
-    @Named("hospitalId")
+    @Named("hospitalName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    HospitalDTO toDtoHospitalId(Hospital hospital);
+    @Mapping(target = "name", source = "name")
+    HospitalDTO toDtoHospitalName(Hospital hospital);
 
-    @Named("doctorId")
+    @Named("doctorFirstname")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    DoctorDTO toDtoDoctorId(Doctor doctor);
+    @Mapping(target = "firstname", source = "firstname")
+    DoctorDTO toDtoDoctorFirstname(Doctor doctor);
 
-    @Named("doctorIdSet")
-    default Set<DoctorDTO> toDtoDoctorIdSet(Set<Doctor> doctor) {
-        return doctor.stream().map(this::toDtoDoctorId).collect(Collectors.toSet());
+    @Named("doctorFirstnameSet")
+    default Set<DoctorDTO> toDtoDoctorFirstnameSet(Set<Doctor> doctor) {
+        return doctor.stream().map(this::toDtoDoctorFirstname).collect(Collectors.toSet());
     }
 }

@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +64,7 @@ public class QueueForDoctorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/queue-for-doctors")
-    public ResponseEntity<QueueForDoctorDTO> createQueueForDoctor(@RequestBody QueueForDoctorDTO queueForDoctorDTO)
+    public ResponseEntity<QueueForDoctorDTO> createQueueForDoctor(@Valid @RequestBody QueueForDoctorDTO queueForDoctorDTO)
         throws URISyntaxException {
         log.debug("REST request to save QueueForDoctor : {}", queueForDoctorDTO);
         if (queueForDoctorDTO.getId() != null) {
@@ -88,7 +90,7 @@ public class QueueForDoctorResource {
     @PutMapping("/queue-for-doctors/{id}")
     public ResponseEntity<QueueForDoctorDTO> updateQueueForDoctor(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody QueueForDoctorDTO queueForDoctorDTO
+        @Valid @RequestBody QueueForDoctorDTO queueForDoctorDTO
     ) throws URISyntaxException {
         log.debug("REST request to update QueueForDoctor : {}, {}", id, queueForDoctorDTO);
         if (queueForDoctorDTO.getId() == null) {
@@ -123,7 +125,7 @@ public class QueueForDoctorResource {
     @PatchMapping(value = "/queue-for-doctors/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<QueueForDoctorDTO> partialUpdateQueueForDoctor(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody QueueForDoctorDTO queueForDoctorDTO
+        @NotNull @RequestBody QueueForDoctorDTO queueForDoctorDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update QueueForDoctor partially : {}, {}", id, queueForDoctorDTO);
         if (queueForDoctorDTO.getId() == null) {

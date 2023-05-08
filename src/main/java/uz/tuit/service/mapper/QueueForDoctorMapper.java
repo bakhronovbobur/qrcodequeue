@@ -17,29 +17,33 @@ import uz.tuit.service.dto.UserDTO;
  */
 @Mapper(componentModel = "spring")
 public interface QueueForDoctorMapper extends EntityMapper<QueueForDoctorDTO, QueueForDoctor> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
-    @Mapping(target = "doctor", source = "doctor", qualifiedByName = "doctorId")
-    @Mapping(target = "department", source = "department", qualifiedByName = "departmentId")
-    @Mapping(target = "hospital", source = "hospital", qualifiedByName = "hospitalId")
+    @Mapping(target = "user", source = "user", qualifiedByName = "userLogin")
+    @Mapping(target = "doctor", source = "doctor", qualifiedByName = "doctorFirstname")
+    @Mapping(target = "department", source = "department", qualifiedByName = "departmentName")
+    @Mapping(target = "hospital", source = "hospital", qualifiedByName = "hospitalName")
     QueueForDoctorDTO toDto(QueueForDoctor s);
 
-    @Named("userId")
+    @Named("userLogin")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    UserDTO toDtoUserId(User user);
+    @Mapping(target = "login", source = "login")
+    UserDTO toDtoUserLogin(User user);
 
-    @Named("doctorId")
+    @Named("doctorFirstname")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    DoctorDTO toDtoDoctorId(Doctor doctor);
+    @Mapping(target = "firstname", source = "firstname")
+    DoctorDTO toDtoDoctorFirstname(Doctor doctor);
 
-    @Named("departmentId")
+    @Named("departmentName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    DepartmentDTO toDtoDepartmentId(Department department);
+    @Mapping(target = "name", source = "name")
+    DepartmentDTO toDtoDepartmentName(Department department);
 
-    @Named("hospitalId")
+    @Named("hospitalName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    HospitalDTO toDtoHospitalId(Hospital hospital);
+    @Mapping(target = "name", source = "name")
+    HospitalDTO toDtoHospitalName(Hospital hospital);
 }

@@ -2,6 +2,7 @@ package uz.tuit.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link uz.tuit.domain.QueueForDoctor} entity.

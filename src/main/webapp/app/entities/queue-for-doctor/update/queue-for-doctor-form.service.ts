@@ -43,10 +43,18 @@ export class QueueForDoctorFormService {
         }
       ),
       number: new FormControl(queueForDoctorRawValue.number),
-      user: new FormControl(queueForDoctorRawValue.user),
-      doctor: new FormControl(queueForDoctorRawValue.doctor),
-      department: new FormControl(queueForDoctorRawValue.department),
-      hospital: new FormControl(queueForDoctorRawValue.hospital),
+      user: new FormControl(queueForDoctorRawValue.user, {
+        validators: [Validators.required],
+      }),
+      doctor: new FormControl(queueForDoctorRawValue.doctor, {
+        validators: [Validators.required],
+      }),
+      department: new FormControl(queueForDoctorRawValue.department, {
+        validators: [Validators.required],
+      }),
+      hospital: new FormControl(queueForDoctorRawValue.hospital, {
+        validators: [Validators.required],
+      }),
     });
   }
 

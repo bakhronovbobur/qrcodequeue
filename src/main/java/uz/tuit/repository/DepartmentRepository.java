@@ -19,14 +19,26 @@ import uz.tuit.domain.Department;
 public interface DepartmentRepository
     extends DepartmentRepositoryWithBagRelationships, JpaRepository<Department, Long>, JpaSpecificationExecutor<Department> {
     default Optional<Department> findOneWithEagerRelationships(Long id) {
-        return this.fetchBagRelationships(this.findById(id));
+        return this.fetchBagRelationships(this.findOneWithToOneRelationships(id));
     }
 
     default List<Department> findAllWithEagerRelationships() {
-        return this.fetchBagRelationships(this.findAll());
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships());
     }
 
     default Page<Department> findAllWithEagerRelationships(Pageable pageable) {
-        return this.fetchBagRelationships(this.findAll(pageable));
+        return this.fetchBagRelationships(this.findAllWithToOneRelationships(pageable));
     }
+
+    @Query(
+        value = "select distinct department from Department department left join fetch department.hospital",
+        countQuery = "select count(distinct department) from Department department"
+    )
+    Page<Department> findAllWithToOneRelationships(Pageable pageable);
+
+    @Query("select distinct department from Department department left join fetch department.hospital")
+    List<Department> findAllWithToOneRelationships();
+
+    @Query("select department from Department department left join fetch department.hospital where department.id =:id")
+    Optional<Department> findOneWithToOneRelationships(@Param("id") Long id);
 }

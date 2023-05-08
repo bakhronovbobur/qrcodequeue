@@ -17,24 +17,32 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityField": "login",
       "otherEntityName": "user",
       "relationshipName": "user",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
+      "otherEntityField": "firstname",
       "otherEntityName": "doctor",
       "relationshipName": "doctor",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
+      "otherEntityField": "name",
       "otherEntityName": "department",
       "relationshipName": "department",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     },
     {
+      "otherEntityField": "name",
       "otherEntityName": "hospital",
       "relationshipName": "hospital",
-      "relationshipType": "many-to-one"
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
     }
   ],
   "service": "serviceClass"

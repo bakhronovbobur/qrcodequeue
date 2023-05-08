@@ -8,8 +8,8 @@ export interface IHospital {
   latitude?: number | null;
   description?: string | null;
   address?: string | null;
-  region?: Pick<IRegion, 'id'> | null;
-  district?: Pick<IDistrict, 'id'> | null;
+  region?: Pick<IRegion, 'id' | 'name'> | null;
+  district?: Pick<IDistrict, 'id' | 'name'> | null;
 }
 
 export type NewHospital = Omit<IHospital, 'id'> & { id: null };

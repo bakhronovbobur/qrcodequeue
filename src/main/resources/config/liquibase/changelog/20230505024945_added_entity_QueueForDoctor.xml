@@ -18,16 +18,16 @@
                 <constraints nullable="true" />
             </column>
             <column name="user_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="doctor_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="department_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="hospital_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -51,6 +51,10 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="number" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+            <column name="doctor_id" type="numeric"/>
+            <column name="department_id" type="numeric"/>
+            <column name="hospital_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

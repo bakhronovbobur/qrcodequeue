@@ -2,17 +2,25 @@ package uz.tuit.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +32,7 @@ import uz.tuit.domain.Hospital;
 import uz.tuit.domain.QueueForDoctor;
 import uz.tuit.domain.User;
 import uz.tuit.repository.QueueForDoctorRepository;
+import uz.tuit.service.QueueForDoctorService;
 import uz.tuit.service.criteria.QueueForDoctorCriteria;
 import uz.tuit.service.dto.QueueForDoctorDTO;
 import uz.tuit.service.mapper.QueueForDoctorMapper;
@@ -32,6 +41,7 @@ import uz.tuit.service.mapper.QueueForDoctorMapper;
  * Integration tests for the {@link QueueForDoctorResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class QueueForDoctorResourceIT {
@@ -49,8 +59,14 @@ class QueueForDoctorResourceIT {
     @Autowired
     private QueueForDoctorRepository queueForDoctorRepository;
 
+    @Mock
+    private QueueForDoctorRepository queueForDoctorRepositoryMock;
+
     @Autowired
     private QueueForDoctorMapper queueForDoctorMapper;
+
+    @Mock
+    private QueueForDoctorService queueForDoctorServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -68,6 +84,41 @@ class QueueForDoctorResourceIT {
      */
     public static QueueForDoctor createEntity(EntityManager em) {
         QueueForDoctor queueForDoctor = new QueueForDoctor().number(DEFAULT_NUMBER);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        queueForDoctor.setUser(user);
+        // Add required entity
+        Doctor doctor;
+        if (TestUtil.findAll(em, Doctor.class).isEmpty()) {
+            doctor = DoctorResourceIT.createEntity(em);
+            em.persist(doctor);
+            em.flush();
+        } else {
+            doctor = TestUtil.findAll(em, Doctor.class).get(0);
+        }
+        queueForDoctor.setDoctor(doctor);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        queueForDoctor.setDepartment(department);
+        // Add required entity
+        Hospital hospital;
+        if (TestUtil.findAll(em, Hospital.class).isEmpty()) {
+            hospital = HospitalResourceIT.createEntity(em);
+            em.persist(hospital);
+            em.flush();
+        } else {
+            hospital = TestUtil.findAll(em, Hospital.class).get(0);
+        }
+        queueForDoctor.setHospital(hospital);
         return queueForDoctor;
     }
 
@@ -79,6 +130,41 @@ class QueueForDoctorResourceIT {
      */
     public static QueueForDoctor createUpdatedEntity(EntityManager em) {
         QueueForDoctor queueForDoctor = new QueueForDoctor().number(UPDATED_NUMBER);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        queueForDoctor.setUser(user);
+        // Add required entity
+        Doctor doctor;
+        if (TestUtil.findAll(em, Doctor.class).isEmpty()) {
+            doctor = DoctorResourceIT.createUpdatedEntity(em);
+            em.persist(doctor);
+            em.flush();
+        } else {
+            doctor = TestUtil.findAll(em, Doctor.class).get(0);
+        }
+        queueForDoctor.setDoctor(doctor);
+        // Add required entity
+        Department department;
+        if (TestUtil.findAll(em, Department.class).isEmpty()) {
+            department = DepartmentResourceIT.createUpdatedEntity(em);
+            em.persist(department);
+            em.flush();
+        } else {
+            department = TestUtil.findAll(em, Department.class).get(0);
+        }
+        queueForDoctor.setDepartment(department);
+        // Add required entity
+        Hospital hospital;
+        if (TestUtil.findAll(em, Hospital.class).isEmpty()) {
+            hospital = HospitalResourceIT.createUpdatedEntity(em);
+            em.persist(hospital);
+            em.flush();
+        } else {
+            hospital = TestUtil.findAll(em, Hospital.class).get(0);
+        }
+        queueForDoctor.setHospital(hospital);
         return queueForDoctor;
     }
 
@@ -140,6 +226,23 @@ class QueueForDoctorResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(queueForDoctor.getId().intValue())))
             .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllQueueForDoctorsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(queueForDoctorServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restQueueForDoctorMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(queueForDoctorServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllQueueForDoctorsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(queueForDoctorServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restQueueForDoctorMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(queueForDoctorRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test

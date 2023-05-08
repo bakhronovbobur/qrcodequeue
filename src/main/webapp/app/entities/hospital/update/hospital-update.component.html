@@ -56,9 +56,12 @@
             formControlName="region"
             [compareWith]="compareRegion"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="regionOption" *ngFor="let regionOption of regionsSharedCollection">{{ regionOption.id }}</option>
+            <option *ngIf="!editForm.get('region')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="regionOption" *ngFor="let regionOption of regionsSharedCollection">{{ regionOption.name }}</option>
           </select>
+        </div>
+        <div *ngIf="editForm.get(['region'])!.invalid && (editForm.get(['region'])!.dirty || editForm.get(['region'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['region'])?.errors?.required"> This field is required. </small>
         </div>
 
         <div class="row mb-3">
@@ -71,9 +74,12 @@
             formControlName="district"
             [compareWith]="compareDistrict"
           >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="districtOption" *ngFor="let districtOption of districtsSharedCollection">{{ districtOption.id }}</option>
+            <option *ngIf="!editForm.get('district')!.value" [ngValue]="null" selected></option>
+            <option [ngValue]="districtOption" *ngFor="let districtOption of districtsSharedCollection">{{ districtOption.name }}</option>
           </select>
+        </div>
+        <div *ngIf="editForm.get(['district'])!.invalid && (editForm.get(['district'])!.dirty || editForm.get(['district'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['district'])?.errors?.required"> This field is required. </small>
         </div>
       </div>
 

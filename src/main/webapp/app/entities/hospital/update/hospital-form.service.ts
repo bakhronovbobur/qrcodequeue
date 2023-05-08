@@ -51,8 +51,12 @@ export class HospitalFormService {
       latitude: new FormControl(hospitalRawValue.latitude),
       description: new FormControl(hospitalRawValue.description),
       address: new FormControl(hospitalRawValue.address),
-      region: new FormControl(hospitalRawValue.region),
-      district: new FormControl(hospitalRawValue.district),
+      region: new FormControl(hospitalRawValue.region, {
+        validators: [Validators.required],
+      }),
+      district: new FormControl(hospitalRawValue.district, {
+        validators: [Validators.required],
+      }),
     });
   }
 

@@ -30,7 +30,7 @@
             [compareWith]="compareHospital"
           >
             <option *ngIf="editForm.get(['hospital'])!.value == null" [ngValue]="null" selected></option>
-            <option [ngValue]="hospitalOption" *ngFor="let hospitalOption of hospitalsSharedCollection">{{ hospitalOption.id }}</option>
+            <option [ngValue]="hospitalOption" *ngFor="let hospitalOption of hospitalsSharedCollection">{{ hospitalOption.name }}</option>
           </select>
         </div>
         <div *ngIf="editForm.get(['hospital'])!.invalid && (editForm.get(['hospital'])!.dirty || editForm.get(['hospital'])!.touched)">
@@ -48,7 +48,7 @@
             formControlName="doctors"
             [compareWith]="compareDoctor"
           >
-            <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.id }}</option>
+            <option [ngValue]="doctorOption" *ngFor="let doctorOption of doctorsSharedCollection">{{ doctorOption.firstname }}</option>
           </select>
         </div>
       </div>

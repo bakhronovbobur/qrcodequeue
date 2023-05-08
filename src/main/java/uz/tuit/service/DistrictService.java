@@ -89,6 +89,15 @@ public class DistrictService {
     }
 
     /**
+     * Get all the districts with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<DistrictDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return districtRepository.findAllWithEagerRelationships(pageable).map(districtMapper::toDto);
+    }
+
+    /**
      * Get one district by id.
      *
      * @param id the id of the entity.
@@ -97,7 +106,7 @@ public class DistrictService {
     @Transactional(readOnly = true)
     public Optional<DistrictDTO> findOne(Long id) {
         log.debug("Request to get District : {}", id);
-        return districtRepository.findById(id).map(districtMapper::toDto);
+        return districtRepository.findOneWithEagerRelationships(id).map(districtMapper::toDto);
     }
 
     /**

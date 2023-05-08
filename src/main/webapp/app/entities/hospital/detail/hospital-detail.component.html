@@ -37,13 +37,13 @@
         <dt><span>Region</span></dt>
         <dd>
           <div *ngIf="hospital.region">
-            <a [routerLink]="['/region', hospital.region.id, 'view']">{{ hospital.region.id }}</a>
+            <a [routerLink]="['/region', hospital.region.id, 'view']">{{ hospital.region.name }}</a>
           </div>
         </dd>
         <dt><span>District</span></dt>
         <dd>
           <div *ngIf="hospital.district">
-            <a [routerLink]="['/district', hospital.district.id, 'view']">{{ hospital.district.id }}</a>
+            <a [routerLink]="['/district', hospital.district.id, 'view']">{{ hospital.district.name }}</a>
           </div>
         </dd>
       </dl>

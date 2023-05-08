@@ -46,7 +46,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="hospital.id">
+          <th scope="col" jhiSortBy="hospital.name">
             <div class="d-flex">
               <span>Hospital</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -63,7 +63,7 @@
           <td>{{ department.name }}</td>
           <td>
             <div *ngIf="department.hospital">
-              <a [routerLink]="['/hospital', department.hospital.id, 'view']">{{ department.hospital.id }}</a>
+              <a [routerLink]="['/hospital', department.hospital.id, 'view']">{{ department.hospital.name }}</a>
             </div>
           </td>
           <td class="text-end">

@@ -11,11 +11,12 @@ import uz.tuit.service.dto.RegionDTO;
  */
 @Mapper(componentModel = "spring")
 public interface DistrictMapper extends EntityMapper<DistrictDTO, District> {
-    @Mapping(target = "region", source = "region", qualifiedByName = "regionId")
+    @Mapping(target = "region", source = "region", qualifiedByName = "regionName")
     DistrictDTO toDto(District s);
 
-    @Named("regionId")
+    @Named("regionName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    RegionDTO toDtoRegionId(Region region);
+    @Mapping(target = "name", source = "name")
+    RegionDTO toDtoRegionName(Region region);
 }

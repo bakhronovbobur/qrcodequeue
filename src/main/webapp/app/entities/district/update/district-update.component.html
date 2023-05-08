@@ -30,7 +30,7 @@
             [compareWith]="compareRegion"
           >
             <option *ngIf="editForm.get(['region'])!.value == null" [ngValue]="null" selected></option>
-            <option [ngValue]="regionOption" *ngFor="let regionOption of regionsSharedCollection">{{ regionOption.id }}</option>
+            <option [ngValue]="regionOption" *ngFor="let regionOption of regionsSharedCollection">{{ regionOption.name }}</option>
           </select>
         </div>
         <div *ngIf="editForm.get(['region'])!.invalid && (editForm.get(['region'])!.dirty || editForm.get(['region'])!.touched)">

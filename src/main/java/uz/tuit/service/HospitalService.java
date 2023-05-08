@@ -89,6 +89,15 @@ public class HospitalService {
     }
 
     /**
+     * Get all the hospitals with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<HospitalDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return hospitalRepository.findAllWithEagerRelationships(pageable).map(hospitalMapper::toDto);
+    }
+
+    /**
      * Get one hospital by id.
      *
      * @param id the id of the entity.
@@ -97,7 +106,7 @@ public class HospitalService {
     @Transactional(readOnly = true)
     public Optional<HospitalDTO> findOne(Long id) {
         log.debug("Request to get Hospital : {}", id);
-        return hospitalRepository.findById(id).map(hospitalMapper::toDto);
+        return hospitalRepository.findOneWithEagerRelationships(id).map(hospitalMapper::toDto);
     }
 
     /**

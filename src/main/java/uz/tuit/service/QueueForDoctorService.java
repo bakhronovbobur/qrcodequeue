@@ -89,6 +89,15 @@ public class QueueForDoctorService {
     }
 
     /**
+     * Get all the queueForDoctors with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<QueueForDoctorDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return queueForDoctorRepository.findAllWithEagerRelationships(pageable).map(queueForDoctorMapper::toDto);
+    }
+
+    /**
      * Get one queueForDoctor by id.
      *
      * @param id the id of the entity.
@@ -97,7 +106,7 @@ public class QueueForDoctorService {
     @Transactional(readOnly = true)
     public Optional<QueueForDoctorDTO> findOne(Long id) {
         log.debug("Request to get QueueForDoctor : {}", id);
-        return queueForDoctorRepository.findById(id).map(queueForDoctorMapper::toDto);
+        return queueForDoctorRepository.findOneWithEagerRelationships(id).map(queueForDoctorMapper::toDto);
     }
 
     /**

@@ -44,7 +44,8 @@
       "otherEntityRelationshipName": "doctors",
       "ownerSide": false,
       "relationshipName": "departments",
-      "relationshipType": "many-to-many"
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
     }
   ],
   "service": "serviceClass"
