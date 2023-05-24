@@ -99,6 +99,10 @@
           </td>
           <td class="text-end">
             <div class="btn-group">
+              <button class="btn btn-primary btn-sm float-left" data-cy="entityDetailsButton" (click)="qrcode(queueForDoctor)">
+                <fa-icon icon="sync"></fa-icon>
+                <span class="d-none d-md-inline">qr-code</span>
+              </button>
               <button
                 type="submit"
                 [routerLink]="['/queue-for-doctor', queueForDoctor.id, 'view']"

@@ -1,0 +1,20 @@
+<form *ngIf="queueForDoctor" name="deleteForm">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <h3 class="modal-title" style="font-family: 'sans-serif'; font-weight: bold" data-cy="queueForDoctorDeleteDialogHeading">
+          <b>QRCODE</b>
+        </h3>
+      </div>
+      <div class="modal-body text-center m-0 p-0">
+        <jhi-alert-error></jhi-alert-error>
+        <img src="http://localhost:8081/api/qrcode/{{queueForDoctor.number}}" alt="qr-code" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

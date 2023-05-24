@@ -5,6 +5,7 @@ import { QueueForDoctorDetailComponent } from './detail/queue-for-doctor-detail.
 import { QueueForDoctorUpdateComponent } from './update/queue-for-doctor-update.component';
 import { QueueForDoctorDeleteDialogComponent } from './delete/queue-for-doctor-delete-dialog.component';
 import { QueueForDoctorRoutingModule } from './route/queue-for-doctor-routing.module';
+import { QueueForDoctorQrcodeDialog } from './qrcode/queue-for-doctor-qrcode-dialog';
 
 @NgModule({
   imports: [SharedModule, QueueForDoctorRoutingModule],
@@ -13,6 +14,7 @@ import { QueueForDoctorRoutingModule } from './route/queue-for-doctor-routing.mo
     QueueForDoctorDetailComponent,
     QueueForDoctorUpdateComponent,
     QueueForDoctorDeleteDialogComponent,
+    QueueForDoctorQrcodeDialog,
   ],
 })
 export class QueueForDoctorModule {}

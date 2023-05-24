@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, QueueForDoctorService } from '../service/queue-for-doctor.service';
 import { QueueForDoctorDeleteDialogComponent } from '../delete/queue-for-doctor-delete-dialog.component';
 import { FilterOptions, IFilterOptions, IFilterOption } from 'app/shared/filter/filter.model';
+import { QueueForDoctorQrcodeDialog } from '../qrcode/queue-for-doctor-qrcode-dialog';
 
 @Component({
   selector: 'jhi-queue-for-doctor',
@@ -45,6 +46,22 @@ export class QueueForDoctorComponent implements OnInit {
 
   delete(queueForDoctor: IQueueForDoctor): void {
     const modalRef = this.modalService.open(QueueForDoctorDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.queueForDoctor = queueForDoctor;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed
+      .pipe(
+        filter(reason => reason === ITEM_DELETED_EVENT),
+        switchMap(() => this.loadFromBackendWithRouteInformations())
+      )
+      .subscribe({
+        next: (res: EntityArrayResponseType) => {
+          this.onResponseSuccess(res);
+        },
+      });
+  }
+
+  qrcode(queueForDoctor: IQueueForDoctor): void {
+    const modalRef = this.modalService.open(QueueForDoctorQrcodeDialog, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.queueForDoctor = queueForDoctor;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed
@@ -148,6 +165,26 @@ export class QueueForDoctorComponent implements OnInit {
       return [];
     } else {
       return [predicate + ',' + ascendingQueryParam];
+    }
+  }
+
+  openQRModal(code?: number | null): void {
+    console.log('qr-code : ' + code);
+    const modelDiv = document.getElementById('myModal');
+    if (modelDiv != null) {
+      const myImg = document.getElementById('qrCodeImg');
+      if (myImg != null) {
+        let src = myImg.getAttribute('src');
+        myImg.setAttribute('src', '/api/qr-code/' + code);
+      }
+      modelDiv.style.display = 'block';
+    }
+  }
+
+  closeQRModal(): void {
+    const modelDiv = document.getElementById('myModal');
+    if (modelDiv != null) {
+      modelDiv.style.display = 'none';
     }
   }
 }

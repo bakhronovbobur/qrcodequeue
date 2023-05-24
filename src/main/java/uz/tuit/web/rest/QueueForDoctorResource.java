@@ -1,10 +1,12 @@
 package uz.tuit.web.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import uz.tuit.repository.QueueForDoctorRepository;
+import uz.tuit.service.QrCodeService;
 import uz.tuit.service.QueueForDoctorQueryService;
 import uz.tuit.service.QueueForDoctorService;
 import uz.tuit.service.criteria.QueueForDoctorCriteria;
@@ -46,14 +49,18 @@ public class QueueForDoctorResource {
 
     private final QueueForDoctorQueryService queueForDoctorQueryService;
 
+    private final QrCodeService qrCodeService;
+
     public QueueForDoctorResource(
         QueueForDoctorService queueForDoctorService,
         QueueForDoctorRepository queueForDoctorRepository,
-        QueueForDoctorQueryService queueForDoctorQueryService
+        QueueForDoctorQueryService queueForDoctorQueryService,
+        QrCodeService qrCodeService
     ) {
         this.queueForDoctorService = queueForDoctorService;
         this.queueForDoctorRepository = queueForDoctorRepository;
         this.queueForDoctorQueryService = queueForDoctorQueryService;
+        this.qrCodeService = qrCodeService;
     }
 
     /**
@@ -109,6 +116,12 @@ public class QueueForDoctorResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, queueForDoctorDTO.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/qrcode/{number}")
+    public void getQrCode(@PathVariable("number") String number, HttpServletResponse response) throws IOException {
+        byte[] qrCode = qrCodeService.generateQRCode(number, 300, 300);
+        response.getOutputStream().write(qrCode);
     }
 
     /**
